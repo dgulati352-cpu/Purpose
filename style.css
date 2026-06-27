@@ -813,3 +813,8 @@ body {
         font-size: 1.3rem;
     }
 }
+
+/* Helper utility to hide elements */
+.hidden {
+    display: none !important;
+}

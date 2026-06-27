@@ -17,12 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     const cuteBanner = document.getElementById('cuteBanner');
 
-    // Forgiveness Stage Elements
     const questionText = document.getElementById('questionText');
-    const forgiveGroup = document.getElementById('forgiveGroup');
     const proposalGroup = document.getElementById('proposalGroup');
-    const forgiveBtn = document.getElementById('forgiveBtn');
-    const angryBtn = document.getElementById('angryBtn');
 
     // --- AUDIO EFFECTS ---
     const popSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav');
@@ -33,9 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- CONFIG & STATE ---
     let isMusicPlaying = false;
     let yesScale = 1.0;
-    let forgiveScale = 1.0;
     let dodgeCount = 0;
-    let forgiveDodgeCount = 0;
     let selectedDateType = 'Late Night talks 🌙';
 
     // Set minimum date picker to today
@@ -43,14 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
     dateSelect.min = today;
     dateSelect.value = today;
 
-    // List of sweet messages for the typewriter effect (apology sequence)
+    // List of sweet messages for the typewriter effect (confession sequence)
     const messages = [
-        "Hey... 🌸",
-        "I know you are really mad at me right now... 🥺",
-        "And I am so, so sorry for upsetting you. 👉👈",
-        "I promise to do better, and I hate seeing you angry or sad.",
-        "You mean the absolute world to me... 💖",
-        "Can we please make up? 🧸"
+        "Hey cutie... 🌸",
+        "I've been thinking about us a lot lately... 🥺",
+        "Every single moment with you is my absolute favorite. 👉👈",
+        "You bring so much warmth, joy, and laughter into my life. 🧸",
+        "You are my sunshine, my happiest place, and my whole heart... 💖",
+        "So, I have a very special question to ask you... 👇"
     ];
 
     // Funny runaway texts for the NO button
@@ -67,17 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "Don't break my heart 💔"
     ];
 
-    // Pleading runaway texts for the STILL ANGRY button
-    const angryTexts = [
-        "Please forgive me? 🥺",
-        "I'll buy you infinite chocolates! 🍫",
-        "Double ice cream promise? 🍦",
-        "I will make you smile! 🌸",
-        "Pretty please? 👉👈",
-        "I'm sorry! 😭",
-        "No more angry face! 😊",
-        "Forgive me, my cutie! 🧸"
-    ];
+
 
     // --- MUSIC CONTROL ---
     function toggleMusic() {
@@ -158,11 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             typeChar();
         } else {
-            // Typewriter finished, show apology question
-            typewriterElement.innerHTML = "Please don't be mad at me... 🥺";
-            cuteBanner.src = 'https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif'; // Sad/crying bear
-            questionText.innerHTML = "Please forgive me? 🥺👉👈";
+            // Typewriter finished, show proposal question
+            typewriterElement.innerHTML = "You mean the absolute world to me... 💖";
+            cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif'; // Blushing bear
+            questionText.innerHTML = "Will you be mine? 🥺👉👈";
             questionContainer.classList.remove('hidden');
+            proposalGroup.classList.remove('hidden');
         }
     }
 
@@ -231,99 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- RUNAWAY ANGRY BUTTON (Stage 1) ---
-    function runawayAngry() {
-        forgiveDodgeCount++;
-        
-        // Play pop sound
-        popSound.currentTime = 0;
-        popSound.play().catch(e => {});
 
-        // Swap illustration to crying bear
-        cuteBanner.src = 'https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif';
-
-        // Check if self-destruction of ANGRY button is reached
-        if (forgiveDodgeCount >= 8) {
-            angryBtn.style.opacity = '0';
-            angryBtn.style.pointerEvents = 'none';
-            typewriterElement.innerHTML = "Please click 'I Forgive You!' now... 🥰";
-            cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif';
-            return;
-        }
-
-        // 1. Change text of ANGRY button
-        const randomText = angryTexts[Math.min(forgiveDodgeCount - 1, angryTexts.length - 1)];
-        angryBtn.textContent = randomText;
-
-        // 2. Make FORGIVE button bigger
-        forgiveScale += 0.35;
-        forgiveBtn.style.transform = `scale(${forgiveScale})`;
-        if (forgiveScale > 2) {
-            forgiveBtn.style.boxShadow = `0 12px 40px rgba(255, 77, 109, ${Math.min(0.35 + (forgiveScale * 0.05), 0.8)})`;
-        }
-
-        // 3. Move ANGRY button to a random position
-        const padding = 30;
-        const btnWidth = angryBtn.offsetWidth;
-        const btnHeight = angryBtn.offsetHeight;
-        
-        const maxX = window.innerWidth - btnWidth - padding;
-        const maxY = window.innerHeight - btnHeight - padding;
-        
-        const randomX = Math.max(padding, Math.random() * maxX);
-        const randomY = Math.max(padding, Math.random() * maxY);
-        
-        angryBtn.style.position = 'fixed';
-        angryBtn.style.left = `${randomX}px`;
-        angryBtn.style.top = `${randomY}px`;
-        angryBtn.style.zIndex = '999';
-    }
-
-    angryBtn.addEventListener('mouseover', runawayAngry);
-    angryBtn.addEventListener('mouseenter', runawayAngry);
-    angryBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        runawayAngry();
-    });
-
-    // Hover reactions on FORGIVE button
-    forgiveBtn.addEventListener('mouseenter', () => {
-        cuteBanner.src = 'https://media.tenor.com/8Q9Qd2hM06gAAAAi/milk-and-mocha-happy.gif';
-    });
-    forgiveBtn.addEventListener('mouseleave', () => {
-        if (forgiveDodgeCount < 8) {
-            cuteBanner.src = 'https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif';
-        }
-    });
-
-    // Action when FORGIVE is clicked
-    forgiveBtn.addEventListener('click', () => {
-        successSound.currentTime = 0;
-        successSound.play().catch(e => {});
-
-        // Reset positions of the buttons if they were moved
-        angryBtn.style.position = 'relative';
-        angryBtn.style.left = 'auto';
-        angryBtn.style.top = 'auto';
-        
-        // Mini confetti burst to celebrate forgiveness!
-        confetti({
-            particleCount: 50,
-            spread: 60,
-            origin: { y: 0.7 }
-        });
-
-        // Hide forgiveness stage
-        forgiveGroup.classList.add('hidden');
-        
-        // Transition text
-        typewriterElement.innerHTML = "Yay! You're the best! 🥰 Now, I have something very special to ask you...";
-        questionText.innerHTML = "Will you make me the happiest person and be mine? 🥺👉👈";
-        
-        // Show proposal button group
-        proposalGroup.classList.remove('hidden');
-        cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif'; // Blushing bear
-    });
 
     // --- YES BUTTON & CELEBRATION ---
     yesBtn.addEventListener('click', () => {
