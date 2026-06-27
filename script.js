@@ -315,11 +315,19 @@ document.addEventListener('DOMContentLoaded', () => {
         reset() {
             this.x = Math.random() * canvas.width;
             this.y = canvas.height + 20;
-            this.size = Math.random() * 15 + 8;
+            // 70% hearts, 30% sparkles
+            this.type = Math.random() > 0.3 ? 'heart' : 'sparkle';
+            this.size = this.type === 'heart' ? (Math.random() * 15 + 8) : (Math.random() * 8 + 4);
             this.speedY = Math.random() * 1.2 + 0.5;
             this.speedX = Math.random() * 0.8 - 0.4;
             this.opacity = Math.random() * 0.5 + 0.3;
-            this.color = `rgba(255, ${Math.floor(Math.random() * 80) + 100}, ${Math.floor(Math.random() * 100) + 120}, ${this.opacity})`;
+            
+            if (this.type === 'heart') {
+                this.color = `rgba(255, ${Math.floor(Math.random() * 80) + 100}, ${Math.floor(Math.random() * 100) + 120}, ${this.opacity})`;
+            } else {
+                // Sparkles color: pastel gold / pale yellow
+                this.color = `rgba(255, 223, 100, ${this.opacity})`;
+            }
             this.rotSpeed = Math.random() * 0.02 - 0.01;
             this.rotation = Math.random() * Math.PI;
         }
@@ -346,15 +354,25 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.globalAlpha = Math.max(0, this.opacity);
             ctx.fillStyle = this.color;
             
-            // Draw heart SVG shape on canvas
             ctx.beginPath();
-            const d = this.size;
-            ctx.moveTo(0, -d / 4);
-            ctx.bezierCurveTo(-d / 2, -d * 0.75, -d, -d / 3, -d, d / 4);
-            ctx.bezierCurveTo(-d, d * 0.7, -d / 3, d, 0, d * 1.1);
-            ctx.bezierCurveTo(d / 3, d, d, d * 0.7, d, d / 4);
-            ctx.bezierCurveTo(d, -d / 3, d / 2, -d * 0.75, 0, -d / 4);
-            ctx.fill();
+            if (this.type === 'heart') {
+                const d = this.size;
+                ctx.moveTo(0, -d / 4);
+                ctx.bezierCurveTo(-d / 2, -d * 0.75, -d, -d / 3, -d, d / 4);
+                ctx.bezierCurveTo(-d, d * 0.7, -d / 3, d, 0, d * 1.1);
+                ctx.bezierCurveTo(d / 3, d, d, d * 0.7, d, d / 4);
+                ctx.bezierCurveTo(d, -d / 3, d / 2, -d * 0.75, 0, -d / 4);
+                ctx.fill();
+            } else {
+                // Draw 4-point sparkle star shape
+                const s = this.size;
+                ctx.moveTo(0, -s);
+                ctx.quadraticCurveTo(0, 0, s, 0);
+                ctx.quadraticCurveTo(0, 0, 0, s);
+                ctx.quadraticCurveTo(0, 0, -s, 0);
+                ctx.quadraticCurveTo(0, 0, 0, -s);
+                ctx.fill();
+            }
             ctx.restore();
         }
     }
