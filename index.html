@@ -34,6 +34,63 @@
         <section id="envelopeScreen" class="screen-active">
             <div class="envelope-wrapper">
                 <div class="instruction-text">You have a secret message... 💌</div>
+                
+                <!-- Animated Teddy Bear -->
+                <div class="teddy-container">
+                    <svg class="teddy" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Body -->
+                        <circle cx="50" cy="70" r="18" fill="#b07d62" />
+                        <circle cx="50" cy="70" r="12" fill="#e6a17e" />
+                        
+                        <!-- Left Foot -->
+                        <circle cx="34" cy="84" r="6" fill="#b07d62" />
+                        <circle cx="34" cy="84" r="4" fill="#e6a17e" />
+                        
+                        <!-- Right Foot -->
+                        <circle cx="66" cy="84" r="6" fill="#b07d62" />
+                        <circle cx="66" cy="84" r="4" fill="#e6a17e" />
+                        
+                        <!-- Left Paw -->
+                        <rect x="22" y="54" width="8" height="15" rx="4" transform="rotate(30 26 61)" fill="#b07d62" />
+                        
+                        <!-- Right Paw (Waving!) -->
+                        <g class="teddy-arm">
+                            <rect x="70" y="54" width="8" height="15" rx="4" transform="rotate(-30 74 61)" fill="#b07d62" />
+                        </g>
+                        
+                        <!-- Ears -->
+                        <circle cx="34" cy="30" r="7" fill="#b07d62" />
+                        <circle cx="34" cy="30" r="3.5" fill="#ffb7c5" />
+                        <circle cx="66" cy="30" r="7" fill="#b07d62" />
+                        <circle cx="66" cy="30" r="3.5" fill="#ffb7c5" />
+                        
+                        <!-- Head -->
+                        <circle cx="50" cy="40" r="17" fill="#c08a6e" />
+                        
+                        <!-- Blushing Cheeks -->
+                        <circle cx="40" cy="44" r="2.5" fill="#ffb7c5" opacity="0.6" />
+                        <circle cx="60" cy="44" r="2.5" fill="#ffb7c5" opacity="0.6" />
+                        
+                        <!-- Snout -->
+                        <ellipse cx="50" cy="45" rx="5" ry="3" fill="#f5cbb7" />
+                        <!-- Nose -->
+                        <polygon points="48.5,43.5 51.5,43.5 50,45" fill="#4a3728" />
+                        <!-- Mouth -->
+                        <path d="M49,46 Q50,47 50,46 Q50,47 51,46" stroke="#4a3728" stroke-width="0.6" fill="none" />
+                        
+                        <!-- Eyes -->
+                        <g class="teddy-eyes">
+                            <circle cx="43" cy="38" r="1.8" fill="#4a3728" />
+                            <circle cx="43" cy="38" r="0.5" fill="#ffffff" transform="translate(-0.4, -0.4)" />
+                            <circle cx="57" cy="38" r="1.8" fill="#4a3728" />
+                            <circle cx="57" cy="38" r="0.5" fill="#ffffff" transform="translate(-0.4, -0.4)" />
+                        </g>
+                        
+                        <!-- Heart in hands -->
+                        <path d="M 50 63 C 50 63, 46 59, 46 55 C 46 51, 50 51, 50 55 C 50 51, 54 51, 54 55 C 54 59, 50 63, 50 63" fill="#ff4d6d" class="teddy-heart" />
+                    </svg>
+                </div>
+
                 <div class="envelope" id="envelope">
                     <div class="flap"></div>
                     <div class="pocket"></div>
