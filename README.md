@@ -9,7 +9,7 @@ An adorable, highly interactive proposal website designed for a very special per
 - **✨ Cute Reactions**: Live-reacting *Milk & Mocha* bear gifs based on hover choices.
 - **🔊 tactile Sounds**: Pop sounds when button jumps, and success chimes when YES is selected.
 - **🚫 Impossible No**: The "No" button runs away on hover, and disappears entirely after 10 attempts!
-- **📅 Date Selector**: Choose a date option (Coffee, Dinner, Movie, Stargazing) and date select calendar.
+- **📅 Date Selector**: Choose a date option (Coffee, Dinner, Movie, Clubbing & Night Out) and date select calendar.
 - **💬 WhatsApp RSVP**: Instantly opens WhatsApp with a prefilled formatted message detailing the answer and date selection!
 
 ## 📂 File Structure
