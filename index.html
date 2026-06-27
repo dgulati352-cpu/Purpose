@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,15 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Pacifico&family=Sacramento&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Pacifico&family=Sacramento&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome for cute icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Background Canvas for Floating Hearts -->
     <canvas id="heartCanvas"></canvas>
@@ -34,50 +38,51 @@
         <section id="envelopeScreen" class="screen-active">
             <div class="envelope-wrapper">
                 <div class="instruction-text">You have a secret message... 💌</div>
-                
+
                 <!-- Animated Teddy Bear -->
                 <div class="teddy-container">
                     <svg class="teddy" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                         <!-- Body -->
                         <circle cx="50" cy="70" r="18" fill="#b07d62" />
                         <circle cx="50" cy="70" r="12" fill="#e6a17e" />
-                        
+
                         <!-- Left Foot -->
                         <circle cx="34" cy="84" r="6" fill="#b07d62" />
                         <circle cx="34" cy="84" r="4" fill="#e6a17e" />
-                        
+
                         <!-- Right Foot -->
                         <circle cx="66" cy="84" r="6" fill="#b07d62" />
                         <circle cx="66" cy="84" r="4" fill="#e6a17e" />
-                        
+
                         <!-- Left Paw -->
                         <rect x="22" y="54" width="8" height="15" rx="4" transform="rotate(30 26 61)" fill="#b07d62" />
-                        
+
                         <!-- Right Paw (Waving!) -->
                         <g class="teddy-arm">
-                            <rect x="70" y="54" width="8" height="15" rx="4" transform="rotate(-30 74 61)" fill="#b07d62" />
+                            <rect x="70" y="54" width="8" height="15" rx="4" transform="rotate(-30 74 61)"
+                                fill="#b07d62" />
                         </g>
-                        
+
                         <!-- Ears -->
                         <circle cx="34" cy="30" r="7" fill="#b07d62" />
                         <circle cx="34" cy="30" r="3.5" fill="#ffb7c5" />
                         <circle cx="66" cy="30" r="7" fill="#b07d62" />
                         <circle cx="66" cy="30" r="3.5" fill="#ffb7c5" />
-                        
+
                         <!-- Head -->
                         <circle cx="50" cy="40" r="17" fill="#c08a6e" />
-                        
+
                         <!-- Blushing Cheeks -->
                         <circle cx="40" cy="44" r="2.5" fill="#ffb7c5" opacity="0.6" />
                         <circle cx="60" cy="44" r="2.5" fill="#ffb7c5" opacity="0.6" />
-                        
+
                         <!-- Snout -->
                         <ellipse cx="50" cy="45" rx="5" ry="3" fill="#f5cbb7" />
                         <!-- Nose -->
                         <polygon points="48.5,43.5 51.5,43.5 50,45" fill="#4a3728" />
                         <!-- Mouth -->
                         <path d="M49,46 Q50,47 50,46 Q50,47 51,46" stroke="#4a3728" stroke-width="0.6" fill="none" />
-                        
+
                         <!-- Eyes -->
                         <g class="teddy-eyes">
                             <circle cx="43" cy="38" r="1.8" fill="#4a3728" />
@@ -85,9 +90,11 @@
                             <circle cx="57" cy="38" r="1.8" fill="#4a3728" />
                             <circle cx="57" cy="38" r="0.5" fill="#ffffff" transform="translate(-0.4, -0.4)" />
                         </g>
-                        
+
                         <!-- Heart in hands -->
-                        <path d="M 50 63 C 50 63, 46 59, 46 55 C 46 51, 50 51, 50 55 C 50 51, 54 51, 54 55 C 54 59, 50 63, 50 63" fill="#ff4d6d" class="teddy-heart" />
+                        <path
+                            d="M 50 63 C 50 63, 46 59, 46 55 C 46 51, 50 51, 50 55 C 50 51, 54 51, 54 55 C 54 59, 50 63, 50 63"
+                            fill="#ff4d6d" class="teddy-heart" />
                     </svg>
                 </div>
 
@@ -115,7 +122,8 @@
 
                 <div class="illustration-container">
                     <!-- Local generated image with fallback in case of loading issues -->
-                    <img id="cuteBanner" src="assets/cute_love_banner.png" alt="Cute love illustration" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600&auto=format&fit=crop'">
+                    <img id="cuteBanner" src="assets/cute_love_banner.png" alt="Cute love illustration"
+                        onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600&auto=format&fit=crop'">
                 </div>
 
                 <div class="message-container">
@@ -124,13 +132,13 @@
 
                 <div class="question-container hidden" id="questionContainer">
                     <h2 class="proposal-question" id="questionText">Please forgive me? 🥺👉👈</h2>
-                    
+
                     <!-- Stage 1: Forgiveness Buttons -->
                     <div class="button-group" id="forgiveGroup">
                         <button id="forgiveBtn" class="btn btn-yes">I Forgive You! 😊</button>
                         <button id="angryBtn" class="btn btn-no">Still Mad! 😡</button>
                     </div>
-                    
+
                     <!-- Stage 2: Proposal Buttons (Hidden initially) -->
                     <div class="button-group hidden" id="proposalGroup">
                         <button id="yesBtn" class="btn btn-yes">YES! 💖</button>
@@ -146,9 +154,11 @@
                 <div class="celebration-header">
                     <div class="emoji-explosion">🎉🥰💖</div>
                     <h1 class="celebration-title">YAAAYYY!!! 💖</h1>
-                    <p class="celebration-subtitle">You made me the happiest person alive! Here is a virtual hug for you 🤗</p>
+                    <p class="celebration-subtitle">You made me the happiest person alive! Here is a virtual hug for you
+                        🤗</p>
                     <div class="celebration-gif-container">
-                        <img class="celebration-gif" src="https://media.tenor.com/0z_2w9D0k6MAAAAi/milk-and-mocha.gif" alt="Cute celebration couple">
+                        <img class="celebration-gif" src="https://media.tenor.com/0z_2w9D0k6MAAAAi/milk-and-mocha.gif"
+                            alt="Cute celebration couple">
                     </div>
                 </div>
 
@@ -156,7 +166,7 @@
                 <div class="date-planner">
                     <h3>Let's plan our first official date! 🌸</h3>
                     <p class="planner-desc">Choose your favorite date idea and select a day:</p>
-                    
+
                     <div class="date-options">
                         <div class="date-option active" data-value="Cozy Coffee Date ☕">
                             <span class="option-icon">☕</span>
@@ -198,4 +208,5 @@
     <!-- Custom JS -->
     <script src="script.js"></script>
 </body>
+
 </html>
