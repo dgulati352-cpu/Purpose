@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let forgiveScale = 1.0;
     let dodgeCount = 0;
     let forgiveDodgeCount = 0;
-    let selectedDateType = 'Cozy Coffee Date ☕';
+    let selectedDateType = 'Late Night talks 🌙';
 
     // Set minimum date picker to today
     const today = new Date().toISOString().split('T')[0];
