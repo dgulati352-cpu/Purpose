@@ -128,9 +128,21 @@ body {
 }
 
 .music-btn.playing {
-    animation: pulseSlow 2s infinite;
-    background: var(--primary-love);
+    animation: musicPulse 2s infinite ease-in-out;
+    background: linear-gradient(135deg, var(--primary-love) 0%, var(--primary-hover) 100%);
     color: white;
+    border-color: transparent;
+}
+
+@keyframes musicPulse {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+    }
+    50% {
+        transform: scale(1.1) rotate(10deg);
+        box-shadow: 0 8px 25px rgba(255, 77, 109, 0.5);
+    }
 }
 
 .music-tooltip {
@@ -220,30 +232,53 @@ body {
     position: relative;
     width: 320px;
     height: 200px;
-    background: #ffb7c5;
+    background: linear-gradient(135deg, #ffccd5 0%, #ffb3c1 100%);
     border-radius: 0 0 12px 12px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 12px 35px rgba(255, 77, 109, 0.15);
     cursor: pointer;
     transition: transform 0.3s ease;
     transform-style: preserve-3d;
 }
 
 .envelope:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 18px 45px rgba(255, 77, 109, 0.25);
+}
+
+/* Gold base ring for wax seal */
+.envelope::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #ffe3a8 20%, #ffb703 100%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 39;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.envelope.open::before {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
 }
 
 .flap {
     position: absolute;
     top: 0;
-    width: 0;
-    height: 0;
-    border-left: 160px solid transparent;
-    border-right: 160px solid transparent;
-    border-top: 115px solid #ff9ebb;
+    left: 0;
+    width: 320px;
+    height: 115px;
+    background: linear-gradient(to bottom, #ffa3b1, #ff85a1);
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
     transform-origin: top;
     z-index: 30;
     transition: transform 0.4s ease 0.2s, z-index 0.2s ease 0.2s;
-    border-radius: 12px 12px 0 0;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.08));
 }
 
 .envelope.open .flap {
@@ -256,9 +291,9 @@ body {
     bottom: 0;
     width: 0;
     height: 0;
-    border-left: 160px solid #ffd1dc;
-    border-right: 160px solid #ffd1dc;
-    border-bottom: 100px solid #ffb7c5;
+    border-left: 160px solid #ffe5ec;
+    border-right: 160px solid #ffe5ec;
+    border-bottom: 100px solid #ffccd5;
     border-radius: 0 0 12px 12px;
     z-index: 20;
 }
@@ -271,7 +306,7 @@ body {
     left: -160px;
     width: 0;
     height: 0;
-    border-left: 160px solid #ffc2d1;
+    border-left: 160px solid #ffa6c9;
     border-right: 140px solid transparent;
     border-bottom: 100px solid transparent;
     border-radius: 0 0 0 12px;
@@ -283,7 +318,7 @@ body {
     right: -160px;
     width: 0;
     height: 0;
-    border-right: 160px solid #ffc2d1;
+    border-right: 160px solid #ffa6c9;
     border-left: 140px solid transparent;
     border-bottom: 100px solid transparent;
     border-radius: 0 0 12px 0;
@@ -295,15 +330,18 @@ body {
     left: 20px;
     width: 280px;
     height: 170px;
-    background: white;
+    background: #fffdfa;
+    border: 1px solid #ffccd5;
     border-radius: 8px;
     z-index: 15;
     transition: transform 0.4s ease, z-index 0.1s ease 0.2s;
     padding: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.12);
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image: radial-gradient(circle, rgba(255, 77, 109, 0.1) 1px, transparent 1px);
+    background-size: 12px 12px;
 }
 
 .envelope.open .letter {
@@ -392,7 +430,7 @@ body {
     font-size: 4rem;
     display: inline-block;
     animation: heartbeat 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
-    filter: drop-shadow(0 4px 8px rgba(255, 77, 109, 0.3));
+    filter: drop-shadow(0 4px 15px rgba(255, 77, 109, 0.5));
 }
 
 .illustration-container {
@@ -417,11 +455,16 @@ body {
 }
 
 .message-container {
-    min-height: 80px;
-    margin-bottom: 20px;
+    min-height: 90px;
+    margin-bottom: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 240, 243, 0.6) 100%);
+    border: 2px dashed rgba(255, 77, 109, 0.35);
+    border-radius: 16px;
+    padding: 15px 24px;
+    box-shadow: inset 0 2px 5px rgba(255, 77, 109, 0.05);
 }
 
 .typewriter-text {
@@ -434,12 +477,14 @@ body {
 
 .typewriter-cursor {
     display: inline-block;
-    width: 2px;
-    height: 1.2rem;
-    background-color: var(--primary-love);
-    margin-left: 2px;
+    margin-left: 4px;
+    font-size: 1.1rem;
     animation: blink 0.8s infinite;
     vertical-align: middle;
+}
+
+.typewriter-cursor::after {
+    content: '💖';
 }
 
 .proposal-question {
@@ -481,6 +526,26 @@ body {
     box-shadow: 0 6px 20px rgba(255, 77, 109, 0.35);
     z-index: 10;
     position: relative;
+    overflow: hidden;
+}
+
+.btn-yes::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.45), transparent);
+    transform: skewX(-30deg);
+    transition: 0.75s;
+    opacity: 0;
+}
+
+.btn-yes:hover::after {
+    left: 120%;
+    opacity: 1;
+    transition: all 0.75s ease-in-out;
 }
 
 .btn-yes:hover {
@@ -496,6 +561,12 @@ body {
     position: relative; /* Sits naturally side-by-side at start */
     transition: all 0.2s cubic-bezier(0.1, 0.8, 0.2, 1);
     z-index: 5;
+}
+
+.btn-no:hover {
+    background: #fdf2f4;
+    color: var(--primary-love);
+    border-color: var(--secondary-cute);
 }
 
 /* --- SCREEN 3: CELEBRATION SCREEN --- */
@@ -572,27 +643,28 @@ body {
 
 .date-option {
     background: white;
-    border: 2px solid transparent;
-    border-radius: 12px;
-    padding: 12px 10px;
+    border: 2px solid rgba(255, 182, 193, 0.25);
+    border-radius: 16px;
+    padding: 15px 10px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 10px rgba(255, 77, 109, 0.03);
 }
 
 .date-option:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(255, 77, 109, 0.1);
-    border-color: var(--secondary-cute);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(255, 77, 109, 0.12);
+    border-color: var(--primary-hover);
 }
 
 .date-option.active {
-    background: #fff0f3;
+    background: linear-gradient(135deg, #fff0f3 0%, #ffe5ec 100%);
     border-color: var(--primary-love);
-    box-shadow: 0 6px 15px rgba(255, 77, 109, 0.15);
+    box-shadow: 0 8px 22px rgba(255, 77, 109, 0.18);
+    transform: translateY(-2px) scale(1.02);
 }
 
 .option-icon {
@@ -621,20 +693,24 @@ body {
 }
 
 .date-picker-container input[type="date"] {
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: 1px solid #e0e0e0;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 182, 193, 0.4);
     font-family: var(--font-primary);
     font-size: 0.95rem;
+    font-weight: 600;
     outline: none;
     color: var(--text-color);
     background: white;
     cursor: pointer;
-    transition: border-color 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    transition: all 0.3s ease;
 }
 
 .date-picker-container input[type="date"]:focus {
     border-color: var(--primary-love);
+    box-shadow: 0 0 10px rgba(255, 77, 109, 0.15);
+    background: #fff0f3;
 }
 
 .btn-whatsapp {
@@ -769,9 +845,8 @@ body {
         height: 160px;
     }
     .flap {
-        border-left-width: 125px;
-        border-right-width: 125px;
-        border-top-width: 90px;
+        width: 250px;
+        height: 90px;
     }
     .pocket {
         border-left-width: 125px;
@@ -817,4 +892,70 @@ body {
 /* Helper utility to hide elements */
 .hidden {
     display: none !important;
+}
+
+/* --- CUTE DECORATIONS & CHEEK ANIMATIONS --- */
+.card-deco {
+    position: absolute;
+    font-size: 1.4rem;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.8;
+}
+
+.card-deco.top-left {
+    top: 15px;
+    left: 15px;
+    animation: floatGentle1 4s ease-in-out infinite;
+}
+
+.card-deco.top-right {
+    top: 15px;
+    right: 15px;
+    animation: floatGentle2 4.5s ease-in-out infinite;
+}
+
+.card-deco.bottom-left {
+    bottom: 15px;
+    left: 15px;
+    animation: floatGentle2 5s ease-in-out infinite;
+}
+
+.card-deco.bottom-right {
+    bottom: 15px;
+    right: 15px;
+    animation: floatGentle1 4.2s ease-in-out infinite;
+}
+
+@keyframes floatGentle1 {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+    50% {
+        transform: translateY(-8px) rotate(15deg) scale(1.15);
+    }
+}
+
+@keyframes floatGentle2 {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+    50% {
+        transform: translateY(6px) rotate(-15deg) scale(1.15);
+    }
+}
+
+.teddy-blush {
+    animation: blushPulse 2.5s infinite ease-in-out;
+}
+
+@keyframes blushPulse {
+    0%, 100% {
+        opacity: 0.4;
+        fill: #ffb7c5;
+    }
+    50% {
+        opacity: 0.95;
+        fill: #ff6b8b;
+    }
 }

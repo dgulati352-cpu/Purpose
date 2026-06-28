@@ -86,6 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- ENVELOPE OPENING ---
     envelope.addEventListener('click', () => {
+        // Play pop sound
+        popSound.currentTime = 0;
+        popSound.play().catch(e => {});
+
         // Play music on first interaction if not playing
         if (!isMusicPlaying) {
             toggleMusic();
