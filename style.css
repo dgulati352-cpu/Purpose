@@ -959,3 +959,115 @@ body {
         fill: #ff6b8b;
     }
 }
+
+/* --- STORYBOOK DIARY STYLING --- */
+.storybook-card {
+    position: relative;
+    max-width: 520px;
+    overflow: hidden;
+}
+
+/* Center binding line to mimic an open diary book */
+.storybook-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(255, 133, 161, 0.25), transparent);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.page-indicator {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary-love);
+    margin-top: 5px;
+    background: #fff0f3;
+    padding: 4px 14px;
+    border-radius: 12px;
+    display: inline-block;
+    border: 1px dashed rgba(255, 182, 193, 0.7);
+    box-shadow: 0 2px 8px rgba(255, 77, 109, 0.04);
+}
+
+.story-pages-container {
+    position: relative;
+    min-height: 310px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.story-page {
+    width: 100%;
+    animation: fadeInPage 0.4s ease-out forwards;
+}
+
+@keyframes fadeInPage {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.story-text {
+    font-family: var(--font-secondary);
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--primary-dark);
+    margin: 0;
+    min-height: 60px;
+}
+
+.story-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    min-height: 48px;
+    gap: 15px;
+}
+
+.btn-control {
+    flex: 1;
+    padding: 8px 18px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: 20px;
+    background: white;
+    color: var(--primary-love);
+    border: 2px solid rgba(255, 182, 193, 0.4);
+    box-shadow: 0 4px 10px rgba(255, 77, 109, 0.05);
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+}
+
+.btn-control:hover {
+    background: var(--primary-love);
+    color: white;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 77, 109, 0.2);
+}
+
+.btn-control:active {
+    transform: translateY(0);
+}
+
+.final-helper-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-love);
+    margin-top: 5px;
+    margin-bottom: 10px;
+    min-height: 20px;
+    text-align: center;
+}

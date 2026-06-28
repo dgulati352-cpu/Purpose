@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const envelopeScreen = document.getElementById('envelopeScreen');
     const confessionScreen = document.getElementById('confessionScreen');
     const celebrationScreen = document.getElementById('celebrationScreen');
-    const typewriterElement = document.getElementById('typewriter');
     const questionContainer = document.getElementById('questionContainer');
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
@@ -20,6 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const questionText = document.getElementById('questionText');
     const proposalGroup = document.getElementById('proposalGroup');
 
+    // Storybook Elements
+    const pageIndicator = document.getElementById('pageIndicator');
+    const prevPageBtn = document.getElementById('prevPageBtn');
+    const nextPageBtn = document.getElementById('nextPageBtn');
+
     // --- AUDIO EFFECTS ---
     const popSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav');
     const successSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav');
@@ -32,20 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let dodgeCount = 0;
     let selectedDateType = 'Late Night talks 🌙';
 
+    // Storybook state
+    let currentPage = 1;
+    const totalPages = 5;
+    let typingTimeout;
+
     // Set minimum date picker to today
     const today = new Date().toISOString().split('T')[0];
     dateSelect.min = today;
     dateSelect.value = today;
-
-    // List of sweet messages for the typewriter effect (confession sequence)
-    const messages = [
-        "Hey cutie... 🌸",
-        "I've been thinking about us a lot lately... 🥺",
-        "Every single moment with you is my absolute favorite. 👉👈",
-        "You bring so much warmth, joy, and laughter into my life. 🧸",
-        "You are my sunshine, my happiest place, and my whole heart... 💖",
-        "So, I have a very special question to ask you... 👇"
-    ];
 
     // Funny runaway texts for the NO button
     const noTexts = [
@@ -88,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     envelope.addEventListener('click', () => {
         // Play pop sound
         popSound.currentTime = 0;
-        popSound.play().catch(e => {});
+        popSound.play().catch(e => { });
 
         // Play music on first interaction if not playing
         if (!isMusicPlaying) {
@@ -96,72 +95,109 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         envelope.classList.add('open');
-        
+
         // Transition to Confession Screen after letter animation completes
         setTimeout(() => {
             envelopeScreen.style.animation = 'fadeIn 0.5s reverse forwards';
             setTimeout(() => {
                 envelopeScreen.classList.remove('screen-active');
                 envelopeScreen.classList.add('screen-hidden');
-                
+
                 confessionScreen.classList.remove('screen-hidden');
                 confessionScreen.classList.add('screen-active');
-                
-                // Start typewriter effect
-                startTypewriter(0);
+
+                // Start Storybook flow
+                currentPage = 1;
+                showPage(1);
             }, 500);
         }, 1200);
     });
 
-    // --- TYPEWRITER EFFECT ---
-    function startTypewriter(index) {
-        if (index < messages.length) {
-            typewriterElement.innerHTML = '';
-            let text = messages[index];
-            let i = 0;
+    // --- STORY DIARY NAVIGATION ---
+    function showPage(pageNumber) {
+        clearTimeout(typingTimeout);
+
+        // Hide all pages
+        document.querySelectorAll('.story-page').forEach(page => {
+            page.classList.add('hidden');
+            page.classList.remove('active');
+        });
+
+        // Show selected page
+        const activePage = document.querySelector(`.story-page[data-page="${pageNumber}"]`);
+        activePage.classList.remove('hidden');
+        activePage.classList.add('active');
+
+        // Update page number indicator
+        pageIndicator.textContent = `Page ${pageNumber} of ${totalPages}`;
+
+        // Handle prev/next buttons visibility
+        if (pageNumber === 1) {
+            prevPageBtn.classList.add('hidden');
+        } else {
+            prevPageBtn.classList.remove('hidden');
+        }
+
+        if (pageNumber === totalPages) {
+            nextPageBtn.classList.add('hidden');
+        } else {
+            nextPageBtn.classList.remove('hidden');
+        }
+
+        // Trigger typewriter on current page text
+        const textElement = activePage.querySelector('.story-text');
+        if (textElement) {
+            const fullText = textElement.getAttribute('data-text') || textElement.textContent;
+            textElement.setAttribute('data-text', fullText);
+            textElement.textContent = '';
             
-            // Add typing indicator
+            let i = 0;
             const cursor = document.createElement('span');
             cursor.className = 'typewriter-cursor';
-            typewriterElement.appendChild(cursor);
+            textElement.appendChild(cursor);
 
-            function typeChar() {
-                if (i < text.length) {
-                    cursor.before(text.charAt(i));
+            function type() {
+                if (i < fullText.length) {
+                    cursor.before(fullText.charAt(i));
                     i++;
-                    setTimeout(typeChar, 45); // Speed of typing
+                    typingTimeout = setTimeout(type, 35); // Typing speed
                 } else {
-                    // Finished typing this sentence, wait and move to next
-                    setTimeout(() => {
-                        // Fade out text
-                        typewriterElement.style.transition = 'opacity 0.5s ease';
-                        typewriterElement.style.opacity = '0';
-                        
-                        setTimeout(() => {
-                            typewriterElement.style.opacity = '1';
-                            startTypewriter(index + 1);
-                        }, 500);
-                    }, 2000); // How long the text stays visible
+                    cursor.remove();
                 }
             }
-            typeChar();
-        } else {
-            // Typewriter finished, show proposal question
-            typewriterElement.innerHTML = "You mean the absolute world to me... 💖";
-            cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif'; // Blushing bear
-            questionText.innerHTML = "Will you be mine? 🥺👉👈";
-            questionContainer.classList.remove('hidden');
-            proposalGroup.classList.remove('hidden');
+            type();
         }
     }
+
+    prevPageBtn.addEventListener('click', () => {
+        // Play pop sound
+        popSound.currentTime = 0;
+        popSound.play().catch(e => {});
+
+        if (currentPage > 1) {
+            currentPage--;
+            showPage(currentPage);
+        }
+    });
+
+    nextPageBtn.addEventListener('click', () => {
+        // Play pop sound
+        popSound.currentTime = 0;
+        popSound.play().catch(e => {});
+
+        if (currentPage < totalPages) {
+            currentPage++;
+            showPage(currentPage);
+        }
+    });
 
     // --- RUNAWAY NO BUTTON (Stage 2) ---
     function runaway() {
         dodgeCount++;
-        
+
         // Play pop sound
         popSound.currentTime = 0;
-        popSound.play().catch(e => {});
+        popSound.play().catch(e => { });
 
         // Swap illustration to sad bear
         cuteBanner.src = 'https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif';
@@ -170,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dodgeCount >= 10) {
             noBtn.style.opacity = '0';
             noBtn.style.pointerEvents = 'none';
-            typewriterElement.innerHTML = "No is no longer an option! Click YES! 🥰";
+            document.getElementById('finalHelperText').innerHTML = "No is no longer an option! Click YES! 🥰";
             cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif';
             return;
         }
@@ -190,13 +226,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const padding = 30;
         const btnWidth = noBtn.offsetWidth;
         const btnHeight = noBtn.offsetHeight;
-        
+
         const maxX = window.innerWidth - btnWidth - padding;
         const maxY = window.innerHeight - btnHeight - padding;
-        
+
         const randomX = Math.max(padding, Math.random() * maxX);
         const randomY = Math.max(padding, Math.random() * maxY);
-        
+
         noBtn.style.position = 'fixed';
         noBtn.style.left = `${randomX}px`;
         noBtn.style.top = `${randomY}px`;
@@ -226,14 +262,14 @@ document.addEventListener('DOMContentLoaded', () => {
     yesBtn.addEventListener('click', () => {
         // Play success sound
         successSound.currentTime = 0;
-        successSound.play().catch(e => {});
+        successSound.play().catch(e => { });
 
         confessionScreen.classList.remove('screen-active');
         confessionScreen.classList.add('screen-hidden');
-        
+
         celebrationScreen.classList.remove('screen-hidden');
         celebrationScreen.classList.add('screen-active');
-        
+
         // Trigger Canvas Confetti
         triggerConfettiExplosion();
     });
@@ -297,10 +333,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const phoneNumber = "918791416116";
         const messageText = `Hey! I opened your cute website and my answer is YES! 💖 I'd love to go on a *${selectedDateType}* with you on *${formattedDate}*. 🥰`;
-        
+
         const encodedText = encodeURIComponent(messageText);
         const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedText}`;
-        
+
         window.open(whatsappUrl, '_blank');
     });
 
@@ -309,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
-    
+
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
@@ -332,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.speedY = Math.random() * 1.2 + 0.5;
             this.speedX = Math.random() * 0.8 - 0.4;
             this.opacity = Math.random() * 0.5 + 0.3;
-            
+
             if (this.type === 'heart') {
                 this.color = `rgba(255, ${Math.floor(Math.random() * 80) + 100}, ${Math.floor(Math.random() * 100) + 120}, ${this.opacity})`;
             } else {
@@ -347,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.y -= this.speedY;
             this.x += this.speedX;
             this.rotation += this.rotSpeed;
-            
+
             // Fade out as it goes higher
             if (this.y < canvas.height * 0.3) {
                 this.opacity -= 0.005;
@@ -364,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.rotate(this.rotation);
             ctx.globalAlpha = Math.max(0, this.opacity);
             ctx.fillStyle = this.color;
-            
+
             ctx.beginPath();
             if (this.type === 'heart') {
                 const d = this.size;
@@ -396,14 +432,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Animation Loop
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+
         particles.forEach(p => {
             p.update();
             p.draw();
         });
-        
+
         requestAnimationFrame(animate);
     }
-    
+
     animate();
 });

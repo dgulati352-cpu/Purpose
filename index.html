@@ -115,7 +115,7 @@
 
         <!-- SCREEN 2: CONFESSION SCREEN -->
         <section id="confessionScreen" class="screen-hidden">
-            <div class="card glassmorphism">
+            <div class="card glassmorphism storybook-card">
                 <!-- Cute decorative elements at the corners -->
                 <div class="card-deco top-left">🌸</div>
                 <div class="card-deco top-right">✨</div>
@@ -124,26 +124,72 @@
 
                 <div class="card-header">
                     <div class="beating-heart">💖</div>
+                    <div class="page-indicator" id="pageIndicator">Page 1 of 5</div>
                 </div>
 
-                <div class="illustration-container">
-                    <!-- Local generated image with fallback in case of loading issues -->
-                    <img id="cuteBanner" src="assets/cute_love_banner.png" alt="Cute love illustration"
-                        onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=600&auto=format&fit=crop'">
-                </div>
-
-                <div class="message-container">
-                    <div id="typewriter" class="typewriter-text"></div>
-                </div>
-
-                <div class="question-container hidden" id="questionContainer">
-                    <h2 class="proposal-question" id="questionText">Will you be mine? 🥺👉👈</h2>
-
-                    <!-- Proposal Buttons -->
-                    <div class="button-group hidden" id="proposalGroup">
-                        <button id="yesBtn" class="btn btn-yes">YES! 💖</button>
-                        <button id="noBtn" class="btn btn-no">No 💔</button>
+                <div class="story-pages-container">
+                    <!-- Page 1 -->
+                    <div class="story-page active" data-page="1">
+                        <div class="illustration-container">
+                            <img class="story-gif" src="https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif" alt="Cute couple greeting">
+                        </div>
+                        <div class="message-container">
+                            <p class="story-text">Hey my favorite human... 🌸 I wanted to tell you something from the bottom of my heart. 🥺</p>
+                        </div>
                     </div>
+
+                    <!-- Page 2 -->
+                    <div class="story-page hidden" data-page="2">
+                        <div class="illustration-container">
+                            <img class="story-gif" src="https://media.tenor.com/8Q9Qd2hM06gAAAAi/milk-and-mocha-happy.gif" alt="Cute happy run">
+                        </div>
+                        <div class="message-container">
+                            <p class="story-text">From the first day we started talking, my world changed. I found myself smiling at my phone like an idiot, waiting for your messages. 👉👈</p>
+                        </div>
+                    </div>
+
+                    <!-- Page 3 -->
+                    <div class="story-page hidden" data-page="3">
+                        <div class="illustration-container">
+                            <img class="story-gif" src="https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif" alt="Cute shy hide">
+                        </div>
+                        <div class="message-container">
+                            <p class="story-text">You have this magical way of making even the most boring days feel incredibly bright. I love how you make me feel safe, happy, and heard. 🧸</p>
+                        </div>
+                    </div>
+
+                    <!-- Page 4 -->
+                    <div class="story-page hidden" data-page="4">
+                        <div class="illustration-container">
+                            <img class="story-gif" src="https://media.tenor.com/0z_2w9D0k6MAAAAi/milk-and-mocha.gif" alt="Cute heart bear">
+                        </div>
+                        <div class="message-container">
+                            <p class="story-text">Life is a beautiful journey, but it would be infinitely better with you by my side. I promise to cherish you and hold your hand, always. 💫</p>
+                        </div>
+                    </div>
+
+                    <!-- Page 5: The Final Proposal Page -->
+                    <div class="story-page hidden" data-page="5">
+                        <div class="illustration-container">
+                            <img class="story-gif" src="https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif" alt="Blushing bear" id="cuteBanner">
+                        </div>
+                        <div class="question-container" id="questionContainer">
+                            <h2 class="proposal-question" id="questionText">Will you be mine? 🥺👉👈</h2>
+                            <p class="final-helper-text" id="finalHelperText"></p>
+                            
+                            <!-- Proposal Buttons -->
+                            <div class="button-group" id="proposalGroup">
+                                <button id="yesBtn" class="btn btn-yes">YES! 💖</button>
+                                <button id="noBtn" class="btn btn-no">No 💔</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page Navigation Buttons -->
+                <div class="story-controls">
+                    <button id="prevPageBtn" class="btn btn-control hidden">⬅️ Back</button>
+                    <button id="nextPageBtn" class="btn btn-control">Next ➡️</button>
                 </div>
             </div>
         </section>
