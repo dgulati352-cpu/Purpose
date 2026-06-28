@@ -177,6 +177,22 @@
                             <h2 class="proposal-question" id="questionText">Will you be mine? 🥺👉👈</h2>
                             <p class="final-helper-text" id="finalHelperText"></p>
                             
+                            <!-- Reason to say No Form -->
+                            <div class="reason-form-container hidden" id="reasonFormContainer">
+                                <p class="reason-title">Wait, is there a reason you want to say no? 🥺</p>
+                                <div class="reason-input-group">
+                                    <input type="text" id="reasonInput" placeholder="Type your reason here..." class="reason-input">
+                                    <button id="submitReasonBtn" class="btn btn-submit-reason">Submit 💝</button>
+                                </div>
+                                <p class="reason-error hidden" id="reasonError">Please enter a reason! 🥺</p>
+                            </div>
+
+                            <!-- Custom Rejection Alert -->
+                            <div class="custom-alert hidden" id="customAlert">
+                                <p class="custom-alert-text" id="customAlertText"></p>
+                                <button id="closeAlertBtn" class="btn btn-control-alert">Okay 🧸</button>
+                            </div>
+
                             <!-- Proposal Buttons -->
                             <div class="button-group" id="proposalGroup">
                                 <button id="yesBtn" class="btn btn-yes">YES! 💖</button>

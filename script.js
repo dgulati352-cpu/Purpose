@@ -24,6 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevPageBtn = document.getElementById('prevPageBtn');
     const nextPageBtn = document.getElementById('nextPageBtn');
 
+    // Reason to say No Elements
+    const reasonFormContainer = document.getElementById('reasonFormContainer');
+    const reasonInput = document.getElementById('reasonInput');
+    const submitReasonBtn = document.getElementById('submitReasonBtn');
+    const reasonError = document.getElementById('reasonError');
+
+    const customAlert = document.getElementById('customAlert');
+    const customAlertText = document.getElementById('customAlertText');
+    const closeAlertBtn = document.getElementById('closeAlertBtn');
+
     // --- AUDIO EFFECTS ---
     const popSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav');
     const successSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav');
@@ -35,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let yesScale = 1.0;
     let dodgeCount = 0;
     let selectedDateType = 'Late Night talks 🌙';
+    let crushReason = '';
 
     // Storybook state
     let currentPage = 1;
@@ -202,22 +213,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Swap illustration to sad bear
         cuteBanner.src = 'https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif';
 
-        // Check if self-destruction of NO button is reached (transformed to YES button)
-        if (dodgeCount >= 5) {
-            noBtn.textContent = "YES! 💖";
-            noBtn.className = "btn btn-yes";
-            noBtn.style.position = 'static';
-            noBtn.style.transform = 'none';
-            noBtn.style.opacity = '1';
-            noBtn.style.pointerEvents = 'auto';
-            noBtn.style.boxShadow = 'none';
-            
-            // Remove runaway event listeners
-            noBtn.removeEventListener('mouseover', runaway);
-            noBtn.removeEventListener('mouseenter', runaway);
-            
-            document.getElementById('finalHelperText').innerHTML = "Okay, okay! You only have one choice now! 😉💖";
-            cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif';
+        // Check if we should ask for a reason (at 3 dodges)
+        if (dodgeCount === 3) {
+            proposalGroup.classList.add('hidden');
+            reasonFormContainer.classList.remove('hidden');
             return;
         }
 
@@ -249,10 +248,47 @@ document.addEventListener('DOMContentLoaded', () => {
         noBtn.style.zIndex = '999';
     }
 
+    // Reason Submit Handler
+    submitReasonBtn.addEventListener('click', () => {
+        const reasonVal = reasonInput.value.trim();
+        if (!reasonVal) {
+            reasonError.classList.remove('hidden');
+            return;
+        }
+        reasonError.classList.add('hidden');
+        crushReason = reasonVal;
+
+        // Hide form and show custom rejection alert
+        reasonFormContainer.classList.add('hidden');
+        customAlertText.innerHTML = `Hmm... "${crushReason}" is not a valid reason! 😜 Rejection request denied.`;
+        customAlert.classList.remove('hidden');
+    });
+
+    // Close Custom Alert & Transform No into YES
+    closeAlertBtn.addEventListener('click', () => {
+        customAlert.classList.add('hidden');
+        proposalGroup.classList.remove('hidden');
+        
+        noBtn.textContent = "YES! 💖";
+        noBtn.className = "btn btn-yes";
+        noBtn.style.position = 'static';
+        noBtn.style.transform = 'none';
+        noBtn.style.opacity = '1';
+        noBtn.style.pointerEvents = 'auto';
+        noBtn.style.boxShadow = 'none';
+        
+        // Remove runaway event listeners
+        noBtn.removeEventListener('mouseover', runaway);
+        noBtn.removeEventListener('mouseenter', runaway);
+        
+        document.getElementById('finalHelperText').innerHTML = "Okay, okay! You only have one choice now! 😉💖";
+        cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif';
+    });
+
     noBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (dodgeCount >= 5) {
-            yesBtn.click(); // Trigger celebration if transformed
+        if (dodgeCount >= 3) {
+            yesBtn.click(); // Trigger celebration if transformed (since they submitted a reason at dodgeCount 3)
         } else {
             runaway();
         }
@@ -270,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cuteBanner.src = 'https://media.tenor.com/8Q9Qd2hM06gAAAAi/milk-and-mocha-happy.gif';
     });
     yesBtn.addEventListener('mouseleave', () => {
-        if (dodgeCount < 5) {
+        if (dodgeCount < 3) {
             cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif';
         }
     });
@@ -351,7 +387,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const formattedDate = dateObj.toLocaleDateString('en-US', options);
 
         const phoneNumber = "918791416116";
-        const messageText = `Hey! I opened your cute website and my answer is YES! 💖 I'd love to go on a *${selectedDateType}* with you on *${formattedDate}*. 🥰`;
+        let messageText = `Hey! I opened your cute website and my answer is YES! 💖 I'd love to go on a *${selectedDateType}* with you on *${formattedDate}*. 🥰`;
+        
+        if (crushReason) {
+            messageText = `Hey! I opened your cute website and my answer is YES! 💖 (I tried to say no because: "${crushReason}", but my reason was rejected! 😂) I'd love to go on a *${selectedDateType}* with you on *${formattedDate}*. 🥰`;
+        }
 
         const encodedText = encodeURIComponent(messageText);
         const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedText}`;
