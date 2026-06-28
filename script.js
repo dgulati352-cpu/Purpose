@@ -202,11 +202,21 @@ document.addEventListener('DOMContentLoaded', () => {
         // Swap illustration to sad bear
         cuteBanner.src = 'https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif';
 
-        // Check if self-destruction of NO button is reached
-        if (dodgeCount >= 10) {
-            noBtn.style.opacity = '0';
-            noBtn.style.pointerEvents = 'none';
-            document.getElementById('finalHelperText').innerHTML = "No is no longer an option! Click YES! 🥰";
+        // Check if self-destruction of NO button is reached (transformed to YES button)
+        if (dodgeCount >= 5) {
+            noBtn.textContent = "YES! 💖";
+            noBtn.className = "btn btn-yes";
+            noBtn.style.position = 'static';
+            noBtn.style.transform = 'none';
+            noBtn.style.opacity = '1';
+            noBtn.style.pointerEvents = 'auto';
+            noBtn.style.boxShadow = 'none';
+            
+            // Remove runaway event listeners
+            noBtn.removeEventListener('mouseover', runaway);
+            noBtn.removeEventListener('mouseenter', runaway);
+            
+            document.getElementById('finalHelperText').innerHTML = "Okay, okay! You only have one choice now! 😉💖";
             cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif';
             return;
         }
@@ -239,6 +249,15 @@ document.addEventListener('DOMContentLoaded', () => {
         noBtn.style.zIndex = '999';
     }
 
+    noBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (dodgeCount >= 5) {
+            yesBtn.click(); // Trigger celebration if transformed
+        } else {
+            runaway();
+        }
+    });
+
     noBtn.addEventListener('mouseover', runaway);
     noBtn.addEventListener('mouseenter', runaway);
     noBtn.addEventListener('touchstart', (e) => {
@@ -251,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cuteBanner.src = 'https://media.tenor.com/8Q9Qd2hM06gAAAAi/milk-and-mocha-happy.gif';
     });
     yesBtn.addEventListener('mouseleave', () => {
-        if (dodgeCount < 10) {
+        if (dodgeCount < 5) {
             cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif';
         }
     });
