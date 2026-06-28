@@ -204,6 +204,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- RUNAWAY NO BUTTON (Stage 2) ---
     function runaway() {
+        if (dodgeCount >= 3) return; // Prevent any runaway actions if form is already active
+
         dodgeCount++;
 
         // Play pop sound
@@ -277,10 +279,6 @@ document.addEventListener('DOMContentLoaded', () => {
         noBtn.style.pointerEvents = 'auto';
         noBtn.style.boxShadow = 'none';
         
-        // Remove runaway event listeners
-        noBtn.removeEventListener('mouseover', runaway);
-        noBtn.removeEventListener('mouseenter', runaway);
-        
         document.getElementById('finalHelperText').innerHTML = "Okay, okay! You only have one choice now! 😉💖";
         cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif';
     });
@@ -294,7 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    noBtn.addEventListener('mouseover', runaway);
     noBtn.addEventListener('mouseenter', runaway);
     noBtn.addEventListener('touchstart', (e) => {
         e.preventDefault();
