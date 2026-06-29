@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isMusicPlaying = false;
     let yesScale = 1.0;
     let dodgeCount = 0;
-    let selectedDateType = 'Late Night talks 🌙';
+    let selectedDateType = 'Ice Cream & Cuddles 🍦';
     let crushReason = '';
 
     // Storybook state
@@ -60,15 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Funny runaway texts for the NO button
     const noTexts = [
         "Are you sure? 🥺",
-        "Think again! 🌸",
-        "No way! 🚫",
-        "Plllzzzzz? 👉👈",
-        "But I love you! ❤️",
+        "Still mad? 😭",
+        "Forgive me plllzzz 👉👈",
+        "I'll buy you chocolate! 🍫",
+        "I'll give you cuddles! 🤗",
         "Wrong button! 😜",
-        "Try clicking the other one! 😉",
-        "I will be sad... 😭",
-        "You can't say no! 💖",
-        "Don't break my heart 💔"
+        "You love me, remember? ❤️",
+        "Please don't be angry... 🧸",
+        "Angry girls grow older faster! 😜",
+        "I'm sorry my queen! 👑❤️"
     ];
 
 
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Hide form and show custom rejection alert
         reasonFormContainer.classList.add('hidden');
-        customAlertText.innerHTML = `Hmm... "${crushReason}" is not a valid reason! 😜 Rejection request denied.`;
+        customAlertText.innerHTML = `Hmm... "${crushReason}" is a completely valid reason, and I feel so bad! 🥺 But my love for you is 10000x stronger, and I promise to make it up to you! ❤️ Anger level reduced by 99%. Please forgive me now? 👉👈`;
         customAlert.classList.remove('hidden');
     });
 
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
         customAlert.classList.add('hidden');
         proposalGroup.classList.remove('hidden');
         
-        noBtn.textContent = "YES! 💖";
+        noBtn.textContent = "Yes, I forgive you! 💖";
         noBtn.className = "btn btn-yes";
         noBtn.style.position = 'static';
         noBtn.style.transform = 'none';
@@ -280,13 +280,13 @@ document.addEventListener('DOMContentLoaded', () => {
         noBtn.style.boxShadow = 'none';
         
         document.getElementById('finalHelperText').innerHTML = "Okay, okay! You only have one choice now! 😉💖";
-        cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif';
+        cuteBanner.src = 'https://media.tenor.com/8Q9Qd2hM06gAAAAi/milk-and-mocha-happy.gif';
     });
 
     noBtn.addEventListener('click', (e) => {
         e.preventDefault();
         if (dodgeCount >= 3) {
-            yesBtn.click(); // Trigger celebration if transformed (since they submitted a reason at dodgeCount 3)
+            yesBtn.click(); // Trigger celebration if transformed
         } else {
             runaway();
         }
@@ -304,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     yesBtn.addEventListener('mouseleave', () => {
         if (dodgeCount < 3) {
-            cuteBanner.src = 'https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif';
+            cuteBanner.src = 'https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif';
         }
     });
 
@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
     whatsappBtn.addEventListener('click', () => {
         const dateValue = dateSelect.value;
         if (!dateValue) {
-            alert("Please pick a day for our date! 🌸");
+            alert("Please pick a day for our make-up date! 🌸");
             return;
         }
 
@@ -384,10 +384,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const formattedDate = dateObj.toLocaleDateString('en-US', options);
 
         const phoneNumber = "918791416116";
-        let messageText = `Hey! I opened your cute website and my answer is YES! 💖 I'd love to go on a *${selectedDateType}* with you on *${formattedDate}*. 🥰`;
+        let messageText = `Hey! I opened your cute website and yes, I forgive you! 🥰 I'd love to go on a make-up date for *${selectedDateType}* with you on *${formattedDate}*. You're paying! 😉❤️`;
         
         if (crushReason) {
-            messageText = `Hey! I opened your cute website and my answer is YES! 💖 (I tried to say no because: "${crushReason}", but my reason was rejected! 😂) I'd love to go on a *${selectedDateType}* with you on *${formattedDate}*. 🥰`;
+            messageText = `Hey! I opened your cute website and yes, I forgive you! 🥰 (I tried to stay mad because: "${crushReason}", but you won me over! 😂) I'd love to go on a make-up date for *${selectedDateType}* on *${formattedDate}*. You're paying! 😉❤️`;
         }
 
         const encodedText = encodeURIComponent(messageText);
