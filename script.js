@@ -57,18 +57,38 @@ document.addEventListener('DOMContentLoaded', () => {
     dateSelect.min = today;
     dateSelect.value = today;
 
-    // Funny runaway texts for the NO button
-    const noTexts = [
-        "Are you sure? 🥺",
-        "Still mad? 😭",
-        "Forgive me plllzzz 👉👈",
-        "I'll buy you chocolate! 🍫",
-        "I'll give you cuddles! 🤗",
-        "Wrong button! 😜",
-        "You love me, remember? ❤️",
-        "Please don't be angry... 🧸",
-        "Angry girls grow older faster! 😜",
-        "I'm sorry my queen! 👑❤️"
+    // convincing stages for the NO button game
+    const convinceStages = [
+        {
+            question: "Will you please forgive me? 🥺👉👈",
+            noText: "No, still mad! 😡",
+            gif: "https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif",
+            helper: ""
+        },
+        {
+            question: "Are you really, really still mad? 🥺💔",
+            noText: "Yes, still mad! 😤",
+            gif: "https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif",
+            helper: "Anger level: 99%"
+        },
+        {
+            question: "What if I buy you your favorite chocolates and boba? 🍫🧋",
+            noText: "Not enough! 🙅‍♀️",
+            gif: "https://media.tenor.com/KzEZwo49H1sAAAAi/milk-and-mocha.gif",
+            helper: "Chocolates package added."
+        },
+        {
+            question: "What if I give you unlimited warm cuddles and forehead kisses? 🤗💖",
+            noText: "Still no! 🙄",
+            gif: "https://media.tenor.com/0z_2w9D0k6MAAAAi/milk-and-mocha.gif",
+            helper: "Cuddles package added."
+        },
+        {
+            question: "Please? My heart is breaking into a million tiny pieces... 💔😭",
+            noText: "Fine, I'll tell you why! 😡",
+            gif: "https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif",
+            helper: "Critical heartbreak level reached."
+        }
     ];
 
 
@@ -127,6 +147,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- STORY DIARY NAVIGATION ---
     function showPage(pageNumber) {
         clearTimeout(typingTimeout);
+
+        // Reset the convincing game state if she navigates away from page 5
+        if (pageNumber !== totalPages && typeof convinceStages !== 'undefined') {
+            dodgeCount = 0;
+            yesScale = 1.0;
+            crushReason = '';
+            
+            // Restore buttons to default state
+            noBtn.classList.remove('hidden');
+            noBtn.textContent = convinceStages[0].noText;
+            noBtn.className = "btn btn-no";
+            noBtn.style.position = 'relative';
+            noBtn.style.transform = 'none';
+            noBtn.style.opacity = '1';
+            
+            yesBtn.style.transform = 'none';
+            yesBtn.style.width = '';
+            yesBtn.style.maxWidth = '';
+            
+            questionText.textContent = convinceStages[0].question;
+            document.getElementById('finalHelperText').textContent = '';
+            cuteBanner.src = convinceStages[0].gif;
+            
+            reasonFormContainer.classList.add('hidden');
+            customAlert.classList.add('hidden');
+            proposalGroup.classList.remove('hidden');
+        }
 
         // Hide all pages
         document.querySelectorAll('.story-page').forEach(page => {
@@ -202,52 +249,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- RUNAWAY NO BUTTON (Stage 2) ---
-    function runaway() {
-        if (dodgeCount >= 3) return; // Prevent any runaway actions if form is already active
-
-        dodgeCount++;
-
+    // --- CONVINCING GAME NO BUTTON (Stage 2) ---
+    function handleNoBtnInteraction() {
         // Play pop sound
         popSound.currentTime = 0;
-        popSound.play().catch(e => { });
+        popSound.play().catch(e => {});
 
-        // Swap illustration to sad bear
-        cuteBanner.src = 'https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif';
+        // Add shake/jiggle animation to signify resistance
+        noBtn.classList.remove('jiggle');
+        void noBtn.offsetWidth; // Trigger reflow to restart CSS animation
+        noBtn.classList.add('jiggle');
 
-        // Check if we should ask for a reason (at 3 dodges)
-        if (dodgeCount === 3) {
+        // Check if we should trigger the grievance form (at final stage)
+        const finalStageIndex = convinceStages.length - 1;
+        if (dodgeCount >= finalStageIndex) {
             proposalGroup.classList.add('hidden');
             reasonFormContainer.classList.remove('hidden');
             return;
         }
 
-        // 1. Change text of NO button
-        const randomText = noTexts[Math.min(dodgeCount - 1, noTexts.length - 1)];
-        noBtn.textContent = randomText;
+        // Increment current stage
+        dodgeCount++;
 
-        // 2. Make YES button bigger
+        // Get stage configuration details
+        const stage = convinceStages[dodgeCount];
+
+        // 1. Update text of NO button
+        noBtn.textContent = stage.noText;
+
+        // 2. Update question text
+        questionText.textContent = stage.question;
+
+        // 3. Update GIF source
+        cuteBanner.src = stage.gif;
+
+        // 4. Update helper text
+        document.getElementById('finalHelperText').textContent = stage.helper;
+
+        // 5. Make YES button bigger to encourage clicking it
         yesScale += 0.35;
         yesBtn.style.transform = `scale(${yesScale})`;
         if (yesScale > 2) {
             yesBtn.style.boxShadow = `0 12px 40px rgba(255, 77, 109, ${Math.min(0.35 + (yesScale * 0.05), 0.8)})`;
         }
-
-        // 3. Move NO button to a random position
-        const padding = 30;
-        const btnWidth = noBtn.offsetWidth;
-        const btnHeight = noBtn.offsetHeight;
-
-        const maxX = window.innerWidth - btnWidth - padding;
-        const maxY = window.innerHeight - btnHeight - padding;
-
-        const randomX = Math.max(padding, Math.random() * maxX);
-        const randomY = Math.max(padding, Math.random() * maxY);
-
-        noBtn.style.position = 'fixed';
-        noBtn.style.left = `${randomX}px`;
-        noBtn.style.top = `${randomY}px`;
-        noBtn.style.zIndex = '999';
     }
 
     // Reason Submit Handler
@@ -271,13 +315,15 @@ document.addEventListener('DOMContentLoaded', () => {
         customAlert.classList.add('hidden');
         proposalGroup.classList.remove('hidden');
         
-        noBtn.textContent = "Yes, I forgive you! 💖";
-        noBtn.className = "btn btn-yes";
-        noBtn.style.position = 'static';
-        noBtn.style.transform = 'none';
-        noBtn.style.opacity = '1';
-        noBtn.style.pointerEvents = 'auto';
-        noBtn.style.boxShadow = 'none';
+        // Hide the No button entirely so she can only say Yes
+        noBtn.classList.add('hidden');
+        
+        // Make the Yes button centered and full-width on card
+        yesBtn.textContent = "Yes, I forgive you! 💖";
+        yesBtn.style.transform = 'scale(1.15)';
+        yesBtn.style.width = '100%';
+        yesBtn.style.maxWidth = '300px';
+        yesBtn.style.boxShadow = '0 6px 20px rgba(255, 77, 109, 0.35)';
         
         document.getElementById('finalHelperText').innerHTML = "Okay, okay! You only have one choice now! 😉💖";
         cuteBanner.src = 'https://media.tenor.com/8Q9Qd2hM06gAAAAi/milk-and-mocha-happy.gif';
@@ -285,17 +331,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     noBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        if (dodgeCount >= 3) {
-            yesBtn.click(); // Trigger celebration if transformed
-        } else {
-            runaway();
-        }
+        handleNoBtnInteraction();
     });
 
-    noBtn.addEventListener('mouseenter', runaway);
-    noBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        runaway();
+    // Playful jiggle on hover/touch
+    noBtn.addEventListener('mouseenter', () => {
+        noBtn.classList.remove('jiggle');
+        void noBtn.offsetWidth;
+        noBtn.classList.add('jiggle');
+    });
+
+    noBtn.addEventListener('touchstart', () => {
+        noBtn.classList.remove('jiggle');
+        void noBtn.offsetWidth;
+        noBtn.classList.add('jiggle');
     });
 
     // Hover reactions on YES button
@@ -303,9 +352,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cuteBanner.src = 'https://media.tenor.com/8Q9Qd2hM06gAAAAi/milk-and-mocha-happy.gif';
     });
     yesBtn.addEventListener('mouseleave', () => {
-        if (dodgeCount < 3) {
-            cuteBanner.src = 'https://media.tenor.com/jM86mN5c488AAAAi/milk-and-mocha-sad.gif';
-        }
+        const currentStageIndex = Math.min(dodgeCount, convinceStages.length - 1);
+        cuteBanner.src = convinceStages[currentStageIndex].gif;
     });
 
 

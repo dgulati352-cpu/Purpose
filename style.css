@@ -441,6 +441,20 @@ body {
     margin-bottom: 20px;
     border: 3px solid white;
     box-shadow: 0 8px 20px rgba(255, 182, 193, 0.4);
+    background: linear-gradient(135deg, #ffeef2 0%, #ffd1dc 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Background fallback heart behind the image */
+.illustration-container::before {
+    content: "💖";
+    font-size: 3rem;
+    position: absolute;
+    z-index: 1;
+    animation: heartbeat 1.5s infinite ease-in-out;
 }
 
 .illustration-container img {
@@ -448,6 +462,8 @@ body {
     height: 100%;
     object-fit: cover;
     transition: transform 0.5s ease;
+    position: relative;
+    z-index: 2; /* Sits on top of the fallback emoji */
 }
 
 .illustration-container img:hover {
@@ -1204,4 +1220,19 @@ body {
     background: var(--primary-pink);
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(255, 77, 109, 0.2);
+}
+
+/* --- JIGGLE ANIMATION FOR PLAYFUL NO BUTTON --- */
+.jiggle {
+    animation: jiggleKeyframe 0.5s ease-in-out;
+}
+
+@keyframes jiggleKeyframe {
+    0% { transform: translateX(0); }
+    15% { transform: translateX(-8px) rotate(-3deg); }
+    30% { transform: translateX(6px) rotate(3deg); }
+    45% { transform: translateX(-5px) rotate(-2deg); }
+    60% { transform: translateX(3px) rotate(1deg); }
+    75% { transform: translateX(-2px) rotate(-1deg); }
+    100% { transform: translateX(0); }
 }
